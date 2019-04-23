@@ -12,13 +12,13 @@ public class MetaEntityListener {
     @PrePersist
     public void onCreate(MetaEntity metaEntity) {
         EntityMetaData metaData = getEntityMetaData(metaEntity);
-        metaData.setCreatedAt(now());
+        metaData.setCreatedAt(now().toString());
     }
 
     @PreUpdate
     public void onUpdate(MetaEntity metaEntity) {
         EntityMetaData metaData = getEntityMetaData(metaEntity);
-        metaData.setUpdatedAt(now());
+        metaData.setUpdatedAt(now().toString());
     }
 
     private EntityMetaData getEntityMetaData(MetaEntity metaEntity) {
@@ -30,8 +30,8 @@ public class MetaEntityListener {
         return metaData;
     }
 
-    private Instant now() {
-        return TimeServiceProvider.now();
+    private String now() {
+        return TimeServiceProvider.now().toString();
     }
 
 }

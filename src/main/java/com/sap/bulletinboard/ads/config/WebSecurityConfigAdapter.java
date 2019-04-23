@@ -35,28 +35,11 @@ public class WebSecurityConfigAdapter extends ResourceServerConfigurerAdapter {
     // configure Spring Security, demand authentication and specific scopes
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
-        http
-            // register TenantFilter in the chain after the SecurityContext is made available by the respective filter
-            .addFilterAfter(new TenantFilter(tenantContext), SecurityContextHolderAwareRequestFilter.class)
-            .sessionManagement()
-                // session is created by approuter
-                .sessionCreationPolicy(SessionCreationPolicy.NEVER)
-                .and()
-            // demand specific scopes depending on intended request
-            .authorizeRequests()
-                // enable OAuth2 checks
-                .antMatchers("/**/*.js", "/**/*.json", "/**/*.xml", "/**/*.html").permitAll()
-                .antMatchers(POST, "/api/v1/ads/**").access(hasScope(UPDATE_SCOPE))
-                .antMatchers(PUT, "/api/v1/ads/**").access(hasScope(UPDATE_SCOPE))
-                .antMatchers(DELETE, "/api/v1/ads/**").access(hasScope(UPDATE_SCOPE))
-                .antMatchers(GET, "/api/v1/ads/**").access(hasScope(DISPLAY_SCOPE))
-                .antMatchers("/actuator/health").permitAll() // should not be exposed in production
-                .antMatchers("/hystrix.stream").permitAll()
-                .antMatchers("/test").permitAll() // TODO remove -> see DefaultController
-                .antMatchers("/").permitAll()
-                .anyRequest().denyAll(); // deny anything not configured above
-        // @formatter:on
+        try {
+            http.authorizeRequests().anyRequest().permitAll();
+            http.csrf().disable();
+        } catch (Exception e) {
+        }
     }
 
     private String hasScope(String localScope) {

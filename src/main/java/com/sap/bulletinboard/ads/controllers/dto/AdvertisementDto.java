@@ -24,7 +24,7 @@ public class AdvertisementDto {
 
     public String category;
 
-    public Instant purchasedOn;
+    public String purchasedOn;
 
     public MetaData metadata = new MetaData();
 

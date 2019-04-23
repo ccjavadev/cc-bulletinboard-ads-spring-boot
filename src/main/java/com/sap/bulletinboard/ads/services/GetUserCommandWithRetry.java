@@ -12,9 +12,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.retry.backoff.FixedBackOffPolicy;
-import org.springframework.retry.policy.SimpleRetryPolicy;
-import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -39,7 +36,6 @@ public class GetUserCommandWithRetry extends HystrixCommand<User> {
     private final String url;
     private final RestTemplate restTemplate;
     private final Function<GetUserCommandWithRetry, User> fallbackFunction;
-    private final RetryTemplate retryTemplate;
 
     GetUserCommandWithRetry(String url, RestTemplate restTemplate,
             Function<GetUserCommandWithRetry, User> fallbackFunction) {
@@ -52,17 +48,6 @@ public class GetUserCommandWithRetry extends HystrixCommand<User> {
         this.url = url;
         this.restTemplate = restTemplate;
         this.fallbackFunction = fallbackFunction;
-        this.retryTemplate = createRetryTemplate();
-    }
-
-    private RetryTemplate createRetryTemplate() {
-        RetryTemplate retryTemplate = new RetryTemplate();
-        retryTemplate.setRetryPolicy(
-                new SimpleRetryPolicy(2, Collections.singletonMap(HttpServerErrorException.class, Boolean.TRUE)));
-        FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
-        backOffPolicy.setBackOffPeriod(BACK_OFF_PERIOD);
-        retryTemplate.setBackOffPolicy(backOffPolicy);
-        return retryTemplate;
     }
 
     @Override
@@ -71,7 +56,7 @@ public class GetUserCommandWithRetry extends HystrixCommand<User> {
 
         logger.info("sending request {} with timeout {}", url, getTimeoutInMs());
         try {
-            User response = retryTemplate.execute(retryContext -> getResponseEntity().getBody());
+            User response = new User();
             logger.info("received HTTP response successfully");
             return response;
         } catch (HttpServerErrorException error) {

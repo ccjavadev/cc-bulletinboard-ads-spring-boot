@@ -52,8 +52,7 @@ public class Advertisement implements MetaEntity {
     private String currency;
 
     @Column(name = "purchasedon")
-    @Convert(converter = InstantAttributeConverter.class)
-    private Instant purchasedOn;
+    private String purchasedOn;
 
     @Column(name = "category")
     private String category;
@@ -94,11 +93,11 @@ public class Advertisement implements MetaEntity {
         this.metaData = metaData;
     }
 
-    public Instant getCreatedAt() {
+    public String getCreatedAt() {
         return metaData.getCreatedAt();
     }
 
-    public Instant getModifiedAt() {
+    public String getModifiedAt() {
         return metaData.getUpdatedAt();
     }
 
@@ -134,11 +133,11 @@ public class Advertisement implements MetaEntity {
         this.currency = currency;
     }
 
-    public Instant getPurchasedOn() {
+    public String getPurchasedOn() {
         return purchasedOn;
     }
 
-    public void setPurchasedOn(Instant purchasedOn) {
+    public void setPurchasedOn(String purchasedOn) {
         this.purchasedOn = purchasedOn;
     }
 

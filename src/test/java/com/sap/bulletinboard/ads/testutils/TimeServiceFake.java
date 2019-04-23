@@ -6,14 +6,14 @@ import com.sap.bulletinboard.ads.util.TimeService;
 
 public class TimeServiceFake implements TimeService {
 
-    private final Instant instant;
+    private final String instant;
 
-    public TimeServiceFake(Instant instant) {
+    public TimeServiceFake(String instant) {
         this.instant = instant;
     }
 
     @Override
-    public Instant now() {
+    public String now() {
         return instant;
     }
 

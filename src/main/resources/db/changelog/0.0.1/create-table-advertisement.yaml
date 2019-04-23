@@ -19,12 +19,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: createdat
-                  type: timestamp
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
                   name: modifiedat
-                  type: timestamp
+                  type: varchar(255)
               - column:
                   name: title
                   type: varchar(255)
@@ -47,7 +47,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: purchasedon
-                  type: timestamp
+                  type: varchar(255)
               - column:
                   name: category
                   type: varchar(255)

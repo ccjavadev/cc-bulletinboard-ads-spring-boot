@@ -10,26 +10,24 @@ import javax.persistence.Embeddable;
 public class EntityMetaData {
 
     @Column(name = "createdat", updatable = false)
-    @Convert(converter = InstantAttributeConverter.class)
-    private Instant createdAt;
+    private String createdAt;
 
     @Column(name = "modifiedat")
-    @Convert(converter = InstantAttributeConverter.class)
-    private Instant updatedAt;
+    private String updatedAt;
 
-    public Instant getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 

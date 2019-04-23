@@ -30,7 +30,6 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.hystrix.Hystrix;
-import com.sap.bulletinboard.ads.config.RetryConfig;
 import com.sap.bulletinboard.ads.models.User;
 
 @RunWith(SpringRunner.class)
@@ -38,7 +37,7 @@ import com.sap.bulletinboard.ads.models.User;
 @AutoConfigureWebClient(registerRestTemplate = true)
 // UserServiceClient uses @RefreshScope, therefore we need to enable auto configuration for this test
 // furthermore, we need to manually enable Spring Retry for this type of test
-@ImportAutoConfiguration({ RetryConfig.class, RefreshAutoConfiguration.class })
+@ImportAutoConfiguration({ RefreshAutoConfiguration.class })
 @TestPropertySource(properties = { "USER_ROUTE=test" })
 public class UserServiceClientTest {
 

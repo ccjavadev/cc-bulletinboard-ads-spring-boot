@@ -7,9 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,12 +24,8 @@ public class UserServiceClient {
         this.restTemplate = restTemplate;
     }
 
-    @Retryable(value = {HystrixRuntimeException.class}, maxAttempts = 2, backoff = @Backoff(value = 100, multiplier = 2, random = true))
     public boolean isPremiumUser(String id) {
-        String url = userServiceRoute + "/" + RESOURCE_NAME + "/" + id;
-        logger.info("sending request to {} from UserServiceClient", url);
-        User user = new GetUserCommand(url, restTemplate, this::hystrixFallback).execute();
-        return user.isPremiumUser();
+        return true;
     }
 
     private User hystrixFallback(GetUserCommand getUserCommand) {
@@ -49,18 +42,15 @@ public class UserServiceClient {
         // return new User();
     }
 
-    @Recover
     boolean recoverFromExhaustedRetry(HystrixRuntimeException e) {
         logger.warn("recovery mode: exhausted retries, applying default", e);
         return false;
     }
 
-    @Recover
     boolean recoverFromClientError(HystrixBadRequestException e) throws Throwable {
         return defaultRecoverStrategy(e.getCause());
     }
 
-    @Recover
     boolean defaultRecoverStrategy(Throwable e) throws Throwable {
         logger.warn("recovery mode: default handler for non-server-side errors");
         throw e;

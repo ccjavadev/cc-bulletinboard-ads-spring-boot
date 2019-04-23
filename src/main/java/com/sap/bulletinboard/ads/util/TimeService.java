@@ -6,6 +6,6 @@ import java.time.Instant;
 @FunctionalInterface
 public interface TimeService {
 
-    Instant now();
+    String now();
 
 }
