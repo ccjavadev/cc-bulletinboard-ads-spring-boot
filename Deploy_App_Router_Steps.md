@@ -1,5 +1,7 @@
 git clone https://github.com/ccjavadev/cc-bulletinboard-ads-spring-boot.git
 
+git checkout deployAppRouter 
+
 Install node, npm
 
 prepare the .npmrc file
